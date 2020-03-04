@@ -26,10 +26,9 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">Kode</th>
-                                        <th class="text-center">Nama Kriteria</th>
+                                        <th class="text-center">Kriteria</th>
                                         <th class="text-center">Atribut</th>
                                         <th class="text-center">Bobot</th>
-                                        <th class="text-center">Keterangan</th>
                                         <th class="text-center" style="width: 20%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -38,13 +37,13 @@
                                     @foreach($kriteria as $data)
                                         <tr>
                                             <td>{{$data->kode}}</td>
-                                            <td>{{$data->kriteria}}</td>
+                                            <td>{{$data->nama}}</td>
                                             <td>{{$data->atribut}}</td>
                                             <td>{{$data->bobot}}</td>
-                                            <td>{{$data->keterangan}}</td>
                                             <td class="text-center">
                                                 <form action="{{route('kriteria.hapus',['id' => $data->id])}}" method="POST">
                                                     @csrf
+                                                    <a href="{{route('nilai_kriteria')."?k=".$data->id}}" class="btn btn-sm btn-info">nilai_kriteria</a>
                                                     <a href="{{route('kriteria.edit',['id' => $data->id])}}" class="btn btn-sm btn-warning">Edit</a>
                                                     <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                                                 </form>

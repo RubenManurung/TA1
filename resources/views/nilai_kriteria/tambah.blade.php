@@ -6,25 +6,30 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="float-left">Tambah Mahasiswa</h2>
+                        <h2 class="float-left">Tambah Nilai Crips</h2>
                         </form>
                     </div>
 
                     <div class="card-body">
                         <div class="row">
-                            <form action="{{route('mahasiswa.simpan')}}" method="POST" class="col-md-12">
+                            <form action="{{route('nilai_kriteria.simpan')}}" method="POST" class="col-md-12">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="kode">Kode <span class="text-danger">*</span></label>
-                                    <input type="text" name="kode" class="form-control">
+                                    <label for="kriteria">Kriteria <span class="text-danger">*</span></label>
+                                    <select name="kriteria" class="form-control">
+                                        <option value="">-- Pilih Kriteria --</option>
+                                        @foreach($kriteria as $k)
+                                            <option value="{{$k->id}}">{{$k->kode." - ".$k->nama}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="form-group">
+                                 <div class="form-group">
                                     <label for="nama">Nama <span class="text-danger">*</span></label>
                                     <input type="text" name="nama" class="form-control">
-                                </div>
+                                </ div>
                                 <div class="form-group">
-                                    <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                    <textarea name="keterangan" class="form-control"></textarea>
+                                    <label for="nilai">Nilai <span class="text-danger">*</span></label>
+                                    <input type="text" name="nilai" class="form-control">
                                 </div>
                                 <div class="float-right">
                                     <button type="submit" class="btn btn-success">Tambah</button>

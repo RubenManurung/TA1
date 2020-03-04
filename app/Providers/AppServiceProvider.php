@@ -8,22 +8,22 @@ use Illuminate\Support\Facades\Schema;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Bootstrap any application services.
      *
      * @return void
      */
-    public function register()
+    public function boot()
     {
         //
         Schema::defaultStringLength(191);
     }
 
     /**
-     * Bootstrap any application services.
+     * Register any application services.
      *
      * @return void
      */
-    public function boot()
+    public function register()
     {
         //
     }

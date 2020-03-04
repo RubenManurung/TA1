@@ -2,24 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Kriteria;
-use Illuminate\Support\Facades\Validator;
 
 class KriteriaController extends Controller
 {
-    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $req)
     {
-    	$data = Kriteria::all();
-    	return view('kriteria.index',['kriteria'=> $data]);
+        $data = Kriteria::all();
+//        return response()->json($data);
+        return view('kriteria.index',['kriteria' => $data]);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         return view('kriteria.tambah');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validator($request->all())->validate();
@@ -30,17 +46,36 @@ class KriteriaController extends Controller
         return redirect(route('kriteria'));
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
         //
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         $kriteria = Kriteria::find($id);
         return view('kriteria.edit',['data' => $kriteria]);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $updateData = Kriteria::where('id',$id)
@@ -51,7 +86,13 @@ class KriteriaController extends Controller
         return redirect(route('kriteria'));
     }
 
-     public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
         $find = Kriteria::destroy($id);
         return redirect(route('kriteria'));
@@ -61,10 +102,9 @@ class KriteriaController extends Controller
     {
         return Validator::make($data,[
             'kode'      => 'required|unique:kriteria',
-            'kriteria'      => 'required',
+            'nama'      => 'required',
             'atribut'   => 'required',
-            'bobot'     => 'required',
-            'keterangan'     => 'required'
+            'bobot'     => 'required'
         ]);
     }
 }

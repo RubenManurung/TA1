@@ -23,12 +23,8 @@
                                     <input type="text" name="nama" class="form-control" value="{{$mahasiswa->nama}}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="ipk">IPK <span class="text-danger">*</span></label>
-                                    <textarea name="ipk" class="form-control">{{$mahasiswa->ipk}}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nilaiperilaku">Nilai Perilaku <span class="text-danger">*</span></label>
-                                    <textarea name="nilaiperilaku" class="form-control">{{$mahasiswa->nilaiperilaku}}</textarea>
+                                    <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
+                                    <textarea name="keterangan" class="form-control">{{$mahasiswa->keterangan}}</textarea>
                                 </div>
                                 <div class="float-right">
                                     <button type="submit" class="btn btn-success">Edit</button>

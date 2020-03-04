@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Mahasiswa extends Model
 {
     protected $table        = 'mahasiswa';
-    protected $fillable     = ['kode','nama','ipk','nilaiperilaku'];
+    protected $fillable     = ['kode','nama','keterangan'];
     protected $hidden       = ['created_at','updated_at'];
 
-    // public function crip()
-    // {
-    //     return $this->belongsToMany(\App\Crip::class,'nilai_alternatif','alternatif_id','crip_id');
-    // }
+    public function nilai_kriteria()
+    {
+        return $this->belongsToMany(\App\NilaiKriteria::class,'nilai_alternatif','alternatif_id','nilai_kriteria_id');
+    }
 }

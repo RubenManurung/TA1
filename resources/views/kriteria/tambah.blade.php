@@ -19,8 +19,8 @@
                                     <input type="text" name="kode" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="kriteria">Nama Kriteria <span class="text-danger">*</span></label>
-                                    <input type="text" name="kriteria" class="form-control">
+                                    <label for="nama">Nama Kriteria <span class="text-danger">*</span></label>
+                                    <input type="text" name="nama" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="atribut">Atribut <span class="text-danger">*</span></label>
@@ -33,10 +33,6 @@
                                 <div class="form-group">
                                     <label for="bobot">Bobot <span class="text-danger">*</span></label>
                                     <input type="text" name="bobot" class="form-control">
-                                </div>
-                                 <div class="form-group">
-                                    <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                    <input type="text" name="keterangan" class="form-control">
                                 </div>
                                 <div class="float-right">
                                     <button type="submit" class="btn btn-success">Tambah</button>

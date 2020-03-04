@@ -56,8 +56,7 @@ class MahasiswaController extends Controller
         return Validator::make($data,[
             'kode' => 'required',
             'nama' => 'required',
-            'ipk' => 'required',
-            'nilaiperilaku' => 'required'
+            'keterangan' => 'required'
         ]);
     }
 
