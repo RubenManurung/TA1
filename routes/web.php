@@ -19,6 +19,10 @@ Route::get('hasilsaw', 'HasilSAWController@index');
 Route::post('/alur/index', 'HasilSAWController@tambah')->name('hasilsaw.tambah');
 Route::post('/alur/index', 'HasilSAWController@save')->name('hasilsaw.save');
 
+
+Route::post('alur/index', 'AlurController@store')->name('alur.save');
+
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

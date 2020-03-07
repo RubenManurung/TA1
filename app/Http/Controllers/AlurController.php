@@ -43,5 +43,18 @@ class AlurController extends Controller
         ]);
     }
 
-      
+
+
+public function store(Request $request)
+  {
+        foreach ($rangking as $data) {
+            $alur = new Alur();
+            $alur->kode = $data['kode'];
+            $alur->nama = $data['nama'];
+            $alur->total= $data['total'];
+            $alur->skkm = $data['skkm'];
+
+            $alur->save();
+        }
+  }
 }

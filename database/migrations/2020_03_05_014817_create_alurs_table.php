@@ -18,8 +18,8 @@ class CreateAlursTable extends Migration
             $table->string('kode');
             $table->string('nama');
             $table->string('total');
+            $table->integer('skkm');
             $table->timestamps();
-             $table->save();
         });
     }
 

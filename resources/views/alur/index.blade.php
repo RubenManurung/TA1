@@ -124,7 +124,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 card-deck mt-4">
+            <div class="col-md-12 card-deck mt-4" >
                 <div class="card">
                     <div class="card-header">
                         <h3>Ranking</h3>
@@ -139,6 +139,7 @@
                                         <th>Nama</th>
                                         <th>Total</th>
                                         <th>Ranking</th>
+                                        <th>SKKM</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -150,17 +151,15 @@
                                 });
                                 rsort($rangking);
                                 $a = 1;
+                                        
                                         foreach ($rangking as $data) {
-                                            # code...
                                             $alur = new Alur();
                                             $alur->kode = $data['kode'];
                                             $alur->nama = $data['nama'];
                                             $alur->total= $data['total'];
+                                            $alur->skkm =$data['skkm'];
 
                                         $alur->save();
-                                
-                                                
-                                            
                                         }
                                 ?>
                                     @foreach($rangking as $t)
@@ -168,6 +167,7 @@
                                             <td>{{$t['kode']}}</td>
                                             <td>{{$t['nama']}}</td>
                                             <td>{{$t['total']}}</td>
+                                            <td>{{$t['skk']}}</td>
                                             <td>{{$a++}}</td>                       
                                         </tr>
                                     @endforeach
