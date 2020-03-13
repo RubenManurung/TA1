@@ -15,18 +15,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('hasilsaw', 'HasilSAWController@index');
-Route::post('/alur/index', 'HasilSAWController@tambah')->name('hasilsaw.tambah');
-Route::post('/alur/index', 'HasilSAWController@save')->name('hasilsaw.save');
+Route::get('/hasilsaw', 'HasilSAWController@index')->name('hasilsaw');
 
 
-Route::post('alur/index', 'AlurController@store')->name('alur.save');
 
+
+
+Route::get('/alur', 'AlurController@index')->name('alur');
+Route::post('/edit/{id}', 'AlurController@update')->name('alur.update');
+Route::post('/hapus/{id}', 'AlurController@destroy')->name('alur.hapus');
+Route::get('alur/tambah', 'AlurController@create')->name('alur.tambah');
+Route::post('alur/tambah', 'AlurController@store')->name('alur.simpan');
+Route::post('alur', 'AlurController@peringkat')->name('alur.peringkat');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/alur','AlurController@index')->name('alur');
+
 
 Route::get('/tentang', 'TentangController@index')->name('tentang');
 Route::get('/kontak', 'KontakController@index')->name('kontak');

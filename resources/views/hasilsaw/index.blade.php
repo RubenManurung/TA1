@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<?php use App\Alur; ?>
+<?php use App\HasilSAW; ?>
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -86,7 +86,7 @@
                                     <?php $bobot = [] ?>
                                     @foreach($kriteria as $krit)
                                         <?php $bobot[$krit->id] = $krit->bobot ?>
-                                        <th class="text-center">{{$krit->kode}}</th>
+                                        <th class="text-center">{{$krit->kode}} </th>
                                     @endforeach
                                 </tr>
                                 </thead>
@@ -125,6 +125,8 @@
                     </div>
                 </div>
             </div>
+            
+
             <div class="col-md-12 card-deck mt-4" >
                 <div class="card">
                     <div class="card-header">
@@ -145,25 +147,20 @@
                                 </thead>
                                 <tbody>
 
-                                   
-                                <?php
-                                usort($rangking, function($a)
-                                {
-                                     return $a['total'];
-                                });
-                                asort($rangking);
 
+                                <?php
+                                usort($rangking, function($a, $b)
+                                {
+                                    return $a['total']<=>$b['total'];
+                                });
+                                rsort($rangking);
                                 $a = 1;
                                         
                                         foreach ($rangking as $data) {
-                                            $alur = new Alur();
-                                            $alur->kode = $data['kode'];
-                                            $alur->nama = $data['nama'];
-                                            $alur->total= $data['total'];
-                                            $alur->skkm = $data['skkm'];
+                                            $hasilsaw = new HasilSAW();
+                                            $hasilsaw->total= $data['total'];
 
-                                        $alur->save();
-
+                                        $hasilsaw->save();
                                         }
                                 ?>
                                     @foreach($rangking as $t)
@@ -181,6 +178,8 @@
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 @endsection

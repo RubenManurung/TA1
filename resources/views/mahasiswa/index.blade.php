@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<?php use App\Alur; ?>
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -15,6 +15,9 @@
                         {{--<button type="refresh" class="btn btn-danger">Refresh</button>--}}
                         {{--</div>--}}
                         <div class="float-right">
+                            <a href="{{url('/alur')}}" class="btn btn-success">Seleksi</a>
+                        </div>
+                        <div class="float-right ">
                             <a href="{{route('mahasiswa.tambah')}}" class="btn btn-success">Tambah</a>
                         </div>
                         {{--</form>--}}
