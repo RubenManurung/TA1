@@ -1,110 +1,63 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Kriteria;
+use DB;
 
 class KriteriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $req)
-    {
-        $data = Kriteria::all();
-//        return response()->json($data);
-        return view('kriteria.index',['kriteria' => $data]);
-    }
+    
+    
+    public function edit_kriteria($id){
+        $kriteria_ = kriteria::find($id);
+        return view('edit_kriteria',['vdata'=>$kriteria_]);
+      }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('kriteria.tambah');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validator($request->all())->validate();
-        $saveKriteria = Kriteria::create($request->all());
-        if (!$saveKriteria) {
-            return back();
-        }
-        return redirect(route('kriteria'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $kriteria = Kriteria::find($id);
-        return view('kriteria.edit',['data' => $kriteria]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $updateData = Kriteria::where('id',$id)
-                        ->update($request->except('_token'));
-        if (!$updateData) {
-            return back();
-        }
-        return redirect(route('kriteria'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $find = Kriteria::destroy($id);
-        return redirect(route('kriteria'));
-    }
-
-    private function validator(array $data)
-    {
-        return Validator::make($data,[
-            'kode'      => 'required|unique:kriteria',
-            'nama'      => 'required',
-            'atribut'   => 'required',
-            'bobot'     => 'required'
+      public function update_kriteria(Request $request, $id){
+        $this->validate($request,[
+          'kode'=>'required',
+          'nama'=>'required',
+          'atribut'=>'required',
+          'bobot'=>'required',
+          'keterangan'=>'required'
         ]);
-    }
+    
+        $kriteria_ = kriteria::find($id);
+        $kriteria_->kode = $request->kode;
+        $kriteria_->nama = $request->nama;
+        $kriteria_->atribut = $request->atribut;
+        $kriteria_->bobot = $request->bobot;
+        $kriteria_->keterangan = $request->keterangan;
+    
+        $kriteria_->save();
+        $kriteria__ = DB::table('dimx_dim')
+      ->join('askm_dim_penilaian','askm_dim_penilaian.dim_id','=','dimx_dim.dim_id')
+      ->join('adak_registrasi','adak_registrasi.dim_id','=','askm_dim_penilaian.dim_id')
+      ->select('dimx_dim.nama','adak_registrasi.nr','askm_dim_penilaian.akumulasi_skor','adak_registrasi.ta' ,'adak_registrasi.sem_ta')
+      ->get();
+  
+    return view('sawPage',['krt'=>$kriteria__],['vdata'=>$kriteria_]);
+      }
+
+      public function hapus_kriteria($id){
+        $kriteria_ = kriteria::find($id);
+        $kriteria__ = DB::table('dimx_dim')
+        ->join('askm_dim_penilaian','askm_dim_penilaian.dim_id','=','dimx_dim.dim_id')
+        ->join('adak_registrasi','adak_registrasi.dim_id','=','askm_dim_penilaian.dim_id')
+        ->select('dimx_dim.nama','adak_registrasi.nr','askm_dim_penilaian.akumulasi_skor','adak_registrasi.ta' ,'adak_registrasi.sem_ta')
+        ->get();
+    
+        if(($kriteria_ != null)&& ($kriteria__ != null)) {
+          $kriteria_->delete();
+         
+  
+    return view('sawPage',['krt'=>$kriteria__],['vdata'=>$kriteria_]);
+        }
+        
+    
+        return view('sawPage',['krt'=>$kriteria__],['vdata'=>$kriteria_]);
+      }
+
 }

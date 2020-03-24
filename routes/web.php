@@ -11,72 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'Controller@index');
+Route::get('/Kriteria', 'Controller@Kriteria');
 Route::get('/hasilsaw', 'HasilSAWController@index')->name('hasilsaw');
+Route::get('sawPage','Controller@sawPage');
+Route::get('Kriteria/route_tambah_krt_saw', 'Controller@route_tambah_krt_saw');
+Route::post('Kriteria/store_kriteria','Controller@store_kriteria');
+Route::get('/Kriteria/edit_kriteria/{id}', 'KriteriaController@edit_kriteria');
+Route::put('/Kriteria/update_kriteria/{id}','KriteriaController@update_kriteria');
+Route::get('/Kriteria/hapus_kriteria/{id}', 'KriteriaController@hapus_kriteria');
+Route::get('/Mahasiswa', 'MahasiswaController@Mahasiswa');
 
 
-
-
-
-Route::get('/alur', 'AlurController@index')->name('alur');
-Route::post('/edit/{id}', 'AlurController@update')->name('alur.update');
-Route::post('/hapus/{id}', 'AlurController@destroy')->name('alur.hapus');
-Route::get('alur/tambah', 'AlurController@create')->name('alur.tambah');
-Route::post('alur/tambah', 'AlurController@store')->name('alur.simpan');
-Route::post('alur', 'AlurController@peringkat')->name('alur.peringkat');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::get('/tentang', 'TentangController@index')->name('tentang');
-Route::get('/kontak', 'KontakController@index')->name('kontak');
-
-//kriteria
-Route::prefix('/kriteria')->group(function ()
-{
-Route::get('/', 'KriteriaController@index')->name('kriteria');
-Route::get('/tambah', 'KriteriaController@create')->name('kriteria.tambah');
-    Route::post('/tambah', 'KriteriaController@store')->name('kriteria.simpan');
-    Route::get('/edit/{id}', 'KriteriaController@edit')->name('kriteria.edit');
-    Route::post('/edit/{id}', 'KriteriaController@update')->name('kriteria.update');
-    Route::post('/hapus/{id}', 'KriteriaController@destroy')->name('kriteria.hapus');
-});
-
-//Mahasiswa
-Route::prefix('/mahasiswa')->group(function ()
-{
-    Route::get('/', 'MahasiswaController@index')->name('mahasiswa');
-    Route::get('/tambah', 'MahasiswaController@create')->name('mahasiswa.tambah');
-    Route::post('/tambah', 'MahasiswaController@store')->name('mahasiswa.simpan');
-    Route::get('/edit/{id}', 'MahasiswaController@edit')->name('mahasiswa.edit');
-    Route::post('/edit/{id}', 'MahasiswaController@update')->name('mahasiswa.update');
-    Route::post('/hapus/{id}', 'MahasiswaController@destroy')->name('mahasiswa.hapus');
-});
-
-
-//Route module for nilai_kriteria
-Route::prefix('/nilai_kriteria')->group(function ()
-{
-    Route::get('/', 'NilaiKriteriaController@index')->name('nilai_kriteria');
-    Route::get('/tambah', 'NilaiKriteriaController@create')->name('nilai_kriteria.tambah');
-    Route::post('/tambah', 'NilaiKriteriaController@store')->name('nilai_kriteria.simpan');
-    Route::get('/edit/{id}', 'NilaiKriteriaController@edit')->name('nilai_kriteria.edit');
-    Route::post('/edit/{id}', 'NilaiKriteriaController@update')->name('nilai_kriteria.update');
-    Route::post('/hapus/{id}', 'NilaiKriteriaController@destroy')->name('nilai_kriteria.hapus');
-});
-
-//nilai alternatif
-Route::prefix('/nilai_alternatif')->group(function ()
-{
-    Route::get('/', 'NilaiAlternatifController@index')->name('nilai_alternatif');
-    Route::get('/tambah', 'NilaiAlternatifController@create')->name('nilai_alternatif.tambah');
-    Route::post('/tambah', 'NilaiAlternatifController@store')->name('nilai_alternatif.simpan');
-    Route::get('/edit/{id}', 'NilaiAlternatifController@edit')->name('nilai_alternatif.edit');
-    Route::post('/edit/{id}', 'NilaiAlternatifController@update')->name('nilai_alternatif.update');
-    Route::post('/hapus/{id}', 'NilaiAlternatifController@destroy')->name('nilai_alternatif.hapus');
-});

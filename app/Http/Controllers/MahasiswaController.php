@@ -2,62 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Mahasiswa;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Mahasiswa;
+use App\Kriteria;
+use DB;
 
 class MahasiswaController extends Controller
 {
-    public function index()
+    public function Mahasiswa()
     {
-        $mahasiswas = Mahasiswa::all();
-        return view('mahasiswa.index', ['mahasiswa' => $mahasiswas]);
-    }
-
-    public function create()
-    {
-        return view('mahasiswa.tambah');
-    }
-
-    public function store(Request $request)
-    {
-        $this->validator($request->all())->validate();
-        $saveMahasiswa = Mahasiswa::create($request->all())->id;
-        if (!$saveMahasiswa) {
-            return back();
-        }
-        return redirect(route('mahasiswa.tambah',['id' => $saveMahasiswa]));
-    }
-
-    public function edit($id)
-    {
-        $mahasiswa = Mahasiswa::find($id);
-        return view('mahasiswa.edit',['mahasiswa' => $mahasiswa]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $updateMahasiswa = Mahasiswa::where('id',$id)
-                ->update($request->except(['_token']));
-        if (!$updateMahasiswa) {
-            return back();
-        }
-        return redirect(route('mahasiswa'));
-    }
-
-    public function destroy($id)
-    {
-        $mahasiswa = Mahasiswa::destroy($id);
-        return redirect(route('mahasiswa'));
-    }
-
-    private function validator(array $data)
-    {
-        return Validator::make($data,[
-            'kode' => 'required',
-            'nama' => 'required',
-            'keterangan' => 'required'
-        ]);
-    }
-
+      $kriteria_ = kriteria::all();
+      $kriteria__ = DB::table('dimx_dim')
+      ->join('askm_dim_penilaian','askm_dim_penilaian.dim_id','=','dimx_dim.dim_id')
+      ->join('adak_registrasi','adak_registrasi.dim_id','=','askm_dim_penilaian.dim_id')
+      ->select('dimx_dim.nama','adak_registrasi.nr','askm_dim_penilaian.akumulasi_skor','adak_registrasi.ta' ,'adak_registrasi.sem_ta')
+      ->get();
+  
+    return view('sawPage',['krt'=>$kriteria__],['vdata'=>$kriteria_]);
+  }
 }
