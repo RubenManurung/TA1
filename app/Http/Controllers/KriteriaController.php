@@ -8,14 +8,46 @@ use DB;
 
 class KriteriaController extends Controller
 {
-    
+
+  public function route_tambah_krt_saw(){
+    return view('/tambah_kriteria');
+  }
+
+  public function store_kriteria(Request $request){
+    $data = new Controller();
+    $data->Mahasiswa();
+    $kriteria_saw = kriteria::all();
+    $this->validate($request,[
+      'kode'=>'required',
+      'nama'=>'required',
+      'atribut'=>'required',
+      'bobot'=>'required',
+      'keterangan'=>'required'
+    ]);
+
+    kriteria::create([
+      'kode'=>$request->kode,
+      'nama'=>$request->nama,
+      'atribut'=>$request->atribut,
+      'bobot'=>$request->bobot,
+      'keterangan'=>$request->keterangan
+    ]);
+    return view('sawPage',['vdata'=>$kriteria_saw, 'krt'=>$data]);
+  }
+  
     
     public function edit_kriteria($id){
-        $kriteria_ = kriteria::find($id);
-        return view('edit_kriteria',['vdata'=>$kriteria_]);
+        $kriteria_saw = kriteria::find($id);
+        $data = new Controller();
+        $data->Mahasiswa();
+        return view('edit_kriteria',['vdata'=>$kriteria_saw, 'krt'=>$data]);
       }
 
+      
+
       public function update_kriteria(Request $request, $id){
+        $data = new Controller();
+        $data->Mahasiswa();
         $this->validate($request,[
           'kode'=>'required',
           'nama'=>'required',
@@ -24,40 +56,27 @@ class KriteriaController extends Controller
           'keterangan'=>'required'
         ]);
     
-        $kriteria_ = kriteria::find($id);
-        $kriteria_->kode = $request->kode;
-        $kriteria_->nama = $request->nama;
-        $kriteria_->atribut = $request->atribut;
-        $kriteria_->bobot = $request->bobot;
-        $kriteria_->keterangan = $request->keterangan;
+        $kriteria_saw = kriteria::find($id);
+        $kriteria_saw->kode = $request->kode;
+        $kriteria_saw->nama = $request->nama;
+        $kriteria_saw->atribut = $request->atribut;
+        $kriteria_saw->bobot = $request->bobot;
+        $kriteria_saw->keterangan = $request->keterangan;
     
-        $kriteria_->save();
-        $kriteria__ = DB::table('dimx_dim')
-      ->join('askm_dim_penilaian','askm_dim_penilaian.dim_id','=','dimx_dim.dim_id')
-      ->join('adak_registrasi','adak_registrasi.dim_id','=','askm_dim_penilaian.dim_id')
-      ->select('dimx_dim.nama','adak_registrasi.nr','askm_dim_penilaian.akumulasi_skor','adak_registrasi.ta' ,'adak_registrasi.sem_ta')
-      ->get();
-  
-    return view('sawPage',['krt'=>$kriteria__],['vdata'=>$kriteria_]);
+        $kriteria_saw->save();
+         return view('sawPage',['krt'=>$data],['vdata'=>$kriteria_saw]);
       }
 
       public function hapus_kriteria($id){
-        $kriteria_ = kriteria::find($id);
-        $kriteria__ = DB::table('dimx_dim')
-        ->join('askm_dim_penilaian','askm_dim_penilaian.dim_id','=','dimx_dim.dim_id')
-        ->join('adak_registrasi','adak_registrasi.dim_id','=','askm_dim_penilaian.dim_id')
-        ->select('dimx_dim.nama','adak_registrasi.nr','askm_dim_penilaian.akumulasi_skor','adak_registrasi.ta' ,'adak_registrasi.sem_ta')
-        ->get();
-    
-        if(($kriteria_ != null)&& ($kriteria__ != null)) {
-          $kriteria_->delete();
-         
-  
-    return view('sawPage',['krt'=>$kriteria__],['vdata'=>$kriteria_]);
-        }
-        
-    
-        return view('sawPage',['krt'=>$kriteria__],['vdata'=>$kriteria_]);
+        $data = new Controller();
+    $data->Mahasiswa();
+    $kriteria_saw = kriteria::find($id);
+    if(($kriteria_saw != null) && ($data != null )) {
+      $kriteria_saw->delete();
+        return view('sawPage',['krt'=>$data],['vdata'=>$kriteria_saw]);
+     
+  }
+        return view('sawPage',['krt'=>$data],['vdata'=>$kriteria_saw]);
       }
 
 }
