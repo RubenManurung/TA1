@@ -159,7 +159,6 @@
                 <th>Nilai</th>
                 <th>SKKM</th>
                 <tr>
-
                     <?php $no = 1; ?>
                     @foreach ($krt as $key => $value)
                         <td><?php echo($no++); ?></td>
