@@ -160,6 +160,7 @@
                 <th>SKKM</th>
                 <tr>
                     <?php $no = 1; ?>
+                    <?php if (is_array($krt) || is_object($krt)){ ?>
                     @foreach ($krt as $key => $value)
                         <td><?php echo($no++); ?></td>
                             <td>{{ $value['nama'] }}</td>
@@ -171,7 +172,7 @@
                                 {{ $value['akumulasi_skor'] }}
                             </td>
                         <td>
-                            {{$key}}
+                            {{ $key }}
                         </td>
                         <td>
                             <form method="POST">
@@ -181,6 +182,7 @@
                         </td>
                 </tr>
                 @endforeach
+                <?php } ?>
             </table>
         </div>
 
