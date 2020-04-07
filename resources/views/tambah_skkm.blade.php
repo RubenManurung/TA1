@@ -1,5 +1,5 @@
 @extends('template')
-@section('title', 'SKKM')
+@section('title', 'Kriteria')
 @section('intro-header')
 <header class="intro-header text-black">
 
@@ -9,29 +9,29 @@
 <div class="container">
 
 
-<h4>Tambah SKKM</h4>
-    <form method="post" action="/SKKM/store_skkm">
+<h4>Tambah Kriteria</h4>
+    <form method="post" action="/Skkm/store_skkm">
     {{ method_field('POST') }}
 {{csrf_field()}}
       <table>
         <tr>
-          <td>SKKM</td>
+          <td>DIM</td>
           <td>
-            <input class="form-control" placeholder="SKKM" type="text" name="skkm">
-            @if($errors->has('skkm'))
+            <input class="form-control" placeholder="dim" type="text" onkeyup="isi_otomatis()" name="dim_id">
+            @if($errors->has('dim_id'))
             <div class="text-danger">
-              {{$errors->first('skkm')}}
+              {{$errors->first('dim_id')}}
             </div>
             @endif
           </td>
         </tr>
         <tr>
-          <td>Keterangan</td>
+          <td>SKKM</td>
           <td>
-            <textarea class="form-control" placeholder="Keterangan SKKM" name="keterangan" rows="4" cols="40"></textarea>
-            @if($errors->has('keterangan'))
+            <input class="form-control" placeholder="skkm" type="text" name="skkm">
+            @if($errors->has('skkm'))
             <div class="text-danger">
-              {{$errors->first('keterangan')}}
+              {{$errors->first('skkm')}}
             </div>
             @endif
           </td>

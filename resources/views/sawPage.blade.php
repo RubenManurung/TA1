@@ -48,7 +48,7 @@
                     <th>Keterangan</th>
                     <th>Action</th>
                     <th>
-                        <a href="{{ url('/route_tambah_krt_saw') }}">
+                        <a href="{{ url('/Kriteria/route_tambah_krt_saw') }}">
                             <img class="img-fluid" alt="Responsive image" src="template_madan/images/iconplus.png">
                             Tambah Data
                         </a>
@@ -68,25 +68,14 @@
                         <td>{{$kriteria['bobot']}}</td>
                         <td>{{$kriteria['keterangan']}}</td>
                         <td>
-                            <a href="/edit_kriteria/{{ $kriteria['id'] }}">
+                            <a href="/Kriteria/edit_kriteria/{{ $kriteria['id'] }}">
                                 <img style="width:10%; height: auto;" alt="Responsive image"
                                      src="template_madan/images/edit.png">
                             </a>
-                            <a href="/hapus_kriteria/{{ $kriteria['id'] }}">
+                            <a href="/Kriteria/hapus_kriteria/{{ $kriteria['id'] }}">
                                 <img style="width:10%; height: auto;" src="template_madan/images/delete.png"
                                      alt="Responsive image">
                             </a>
-                        </td>
-                        <td>
-                            <?php
-                            if ($kriteria['atribut'] == "Benefit") {
-                                echo "VeryHigh";
-                            } else if ($kriteria['atribut'] == "Cost") {
-                                echo "Very Low";
-                            } else {
-                                echo "Kriteria tidak tersedia";
-                            }
-                            ?>
                         </td>
                     </tr>
                 @endforeach
@@ -104,8 +93,6 @@
                 <th>Nama</th>
                 <th>Nilai IPK</th>
                 <th>Nilai Prilaku</th>
-                <th>ta</th>
-                <th>sem_ta</th>
                 <tr>
                     <?php $no = 1; ?>
                     <?php if (is_array($krt) || is_object($krt)){ ?>
@@ -114,8 +101,6 @@
                         <td>{{ $dt_mhs['nama'] }}</td>
                         <td>{{ $dt_mhs['IPK'] }}</td>
                         <td>{{ $dt_mhs['akumulasi_skor'] }}</td>
-                        <td>{{ $dt_mhs['ta']}}</td>
-                        <td>{{ $dt_mhs['sem_ta'] }}</td>
                 </tr>
                 @endforeach
                 <?php } ?>
@@ -139,7 +124,9 @@
                         <td><?php echo($no++); ?></td>
                         <td>{{ $dt_mhs['nama'] }}</td>
                         <td>{{ $dt_mhs['skkm'] }}</td>
-                        <td class="text-center"><a href="Skkm/edit_skkm/{{ $dt_mhs['id'] }}"
+                        <td class="text-center"><a href="{{ url('/Skkm/route_tambah_skkm') }}"
+                                                   class="btn btn-sm btn-warning">Tambah</a></td>
+                        <td class="text-center"><a href="#"
                                                    class="btn btn-sm btn-warning">Edit</a></td>
                 </tr>
                 @endforeach

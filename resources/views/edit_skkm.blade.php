@@ -23,17 +23,6 @@
           </td>
         </tr>
         <tr>
-          <td>Keterangan</td>
-          <td>
-            <textarea class="form-control" placeholder="Keterangan Kriteria" name="keterangan" rows="4" cols="40" value="{{ $vdata['keterangan'] }}"></textarea>
-            @if($errors->has('keterangan'))
-            <div class="text-danger">
-              {{$errors->first('keterangan')}}
-            </div>
-            @endif
-          </td>
-        </tr>
-        <tr>
           <td colspan="2">
             <button type="submit" value="simpan">SIMPAN</button>
           </td>
