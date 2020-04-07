@@ -160,11 +160,8 @@
                 <th>SKKM</th>
                 <tr>
                     <?php $no = 1; ?>
-                    <?php
-                        if (is_array($krt) || is_object($krt)){
-                        $finalData = array_slice($krt, 0, 5);
-                    ?>
-                    @foreach ($finalData as $key => $value)
+                    <?php if (is_array($krt) || is_object($krt)){ ?>
+                    @foreach ($krt as $key => $value)
                         <td><?php echo($no++); ?></td>
                             <td>{{ $value['nama'] }}</td>
 
