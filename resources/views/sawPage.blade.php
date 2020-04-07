@@ -25,10 +25,10 @@
             <a class="nav-link {{ request()->is('Penilaian') ? 'active': null }}" href="{{ url('Penilaian') }}"
                role="tab">Data Penilaian</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link {{ request()->is('Skkm') ? 'active': null }}" href="{{ url('Skkm') }}"
                role="tab">SKKM</a>
-        </li>
+        </li> -->
     </ul>
 
 
@@ -145,6 +145,7 @@
                 <th>Nilai Perilaku</th>
                 <th>Nilai</th>
                 <th>SKKM</th>
+                <th>Aksi</th>
                 <tr>
                     <?php $no = 1; ?>
                     <?php if (is_array($krt) || is_object($krt)){ ?>
@@ -167,6 +168,13 @@
                                 <a href="{{url('Skkm')}}" class="btn btn-sm btn-info">Tambah SKKM</a>
                             </form>
                         </td>
+                        <td>
+                            <form method="POST">
+                                @csrf
+                                <a href="{{url('Skkm')}}" class="btn btn-sm btn-info">Edit SKKM</a>
+                            </form>
+                        </td>
+                        
                 </tr>
                 @endforeach
                 <?php } ?>

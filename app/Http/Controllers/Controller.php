@@ -110,7 +110,7 @@ class Controller extends BaseController
 
         krsort($combineData);
 
-        $krt = array_slice($combineData, 0, 7);
+        $krt = array_slice($combineData, 0, 10);
 //        dd($krt);
 
         return view('sawPage', ['vdata' => $kriteria_saw])->with(compact('krt'));

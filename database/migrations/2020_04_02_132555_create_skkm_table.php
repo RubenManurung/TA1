@@ -15,8 +15,9 @@ class CreateSkkmTable extends Migration
     {
         Schema::create('skkm', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('dim_id');
+            $table->integer('dim_id')->unsigned();
             $table->float('skkm');
+            
         });
     }
 

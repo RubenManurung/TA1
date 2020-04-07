@@ -9,4 +9,8 @@ class SKKM extends Model
     protected $table = "skkm";
     protected $fillable     = ['dim_id','skkm'];
     public $timestamps = false;
+
+    public function dimx() {
+        return $this->belongsTo(DimxDim::class);
+    }
 }
