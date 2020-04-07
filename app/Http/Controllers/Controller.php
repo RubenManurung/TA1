@@ -107,10 +107,12 @@ class Controller extends BaseController
             $arrayMahasiswa[] = $item;
         }
 
-        $krt = array_combine($arrayNilaiAkhir, $arrayMahasiswa);
+        $combineData = array_combine($arrayNilaiAkhir, $arrayMahasiswa);
 
-        krsort($krt);
-//        dd($arrayResult);
+        krsort($combineData);
+
+        $krt = array_slice($combineData, 0, 7);
+//        dd($krt);
 
         return view('sawPage', ['vdata' => $kriteria_saw])->with(compact('krt'));
     }
