@@ -195,8 +195,7 @@
       </div>
       <form>
       <div class="modal-body">
-    <form action ="{{action('SKKMController@store_skkm}}" method="POST">
-{{csrf_field()}}
+    <form >
   <div class="form-group">
     <label >SKKM</label>
     <input type="skkm" class="form-control"  placeholder="Enter SKKM">

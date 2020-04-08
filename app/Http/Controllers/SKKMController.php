@@ -16,16 +16,20 @@ class SKKMController extends Controller
   }
 
   public function store_skkm(Request $request){
-      $this->validate($request,[
+    $data = new Controller();
+    $data->Mahasiswa();
+    $skkm_ = skkm::all();
+    $this->validate($request,[
+      'dim_id'=>'required',
       'skkm'=>'required'
     ]);
 
-    $skkm_ = new SKKM;
-    $skkm_->skkm = $request->input('skkm');
+    skkm::create([
+      'dim_id'=>$request->dim_id,
+      'skkm'=>$request->skkm
+    ]);
 
-    $skkm_->save();
-
-    return redirect('/sawPage')->width('success','Data Saved');
+    return view('sawPage',['vdata'=>$skkm_,'krt'=>$data]);
   }
 
   public function edit_skkm($id){
