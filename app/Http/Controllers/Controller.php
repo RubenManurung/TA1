@@ -47,18 +47,15 @@ class Controller extends BaseController
       askm_dim_penilaian.dim_id,
       askm_dim_penilaian.ta,
       askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("dimx_dim.nama, skkm.skkm, adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdekRegistrasi::selectRaw(" dimx_dim.nama, skkm.skkm, adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
             ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
-            ->join('skkm', 'skkm.dim_id', 'adak_registrasi.dim_id')
+            ->join('skkm', 'skkm.id_mhs', 'adak_registrasi.dim_id')
             ->leftJoin(\DB::raw("(" . $skkm__->toSql() . ") as p"), function ($query) {
                 $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
-                $query->on('p.dim_id', '=', 'skkm.dim_id');
+                $query->on('p.dim_id', '=', 'skkm.id_mhs');
                 $query->on('p.ta', '=', 'adak_registrasi.ta');
                 $query->on('p.sem_ta', '=', 'adak_registrasi.sem_ta');
             })
-            ->orderBy('dimx_dim.dim_id', 'desc')
-            ->orderBy('adak_registrasi.ta', 'asc')
-            ->orderBy('adak_registrasi.sem_ta', 'asc')
             ->groupBy('dimx_dim.dim_id')
             ->get();
         return view('sawPage', ['krt' => $query], ['vdata' => $skkm_]);
@@ -73,8 +70,9 @@ class Controller extends BaseController
       askm_dim_penilaian.dim_id,
       askm_dim_penilaian.ta,
       askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdekRegistrasi::selectRaw("dimx_dim.dim_id,dimx_dim.nama,skkm.skkm, adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
             ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
+            ->join('skkm', 'skkm.id_mhs', 'adak_registrasi.dim_id')
             ->leftJoin(\DB::raw("(" . $kriteria_s_a_w->toSql() . ") as p"), function ($query) {
                 $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
                 $query->on('p.ta', '=', 'adak_registrasi.ta');

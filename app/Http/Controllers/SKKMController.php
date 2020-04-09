@@ -15,43 +15,61 @@ class SKKMController extends Controller
     return view('/tambah_skkm');
   }
 
+  // public function store_skkm(Request $request){
+  //   $data = new Controller();
+  //   $data->Mahasiswa();
+  //   $skkm_ = skkm::all();
+  //   $this->validate($request,[
+  //     'dim_id'=>'required',
+  //     'skkm'=>'required'
+  //   ]);
+
+  //   skkm::create([
+  //     'dim_id'=>$request->dim_id,
+  //     'skkm'=>$request->skkm
+  //   ]);
+
+  //   return view('sawPage',['vdata'=>$skkm_,'krt'=>$data]);
+  // }
+
   public function store_skkm(Request $request){
-    $data = new Controller();
-    $data->Mahasiswa();
-    $skkm_ = skkm::all();
+    
     $this->validate($request,[
-      'dim_id'=>'required',
       'skkm'=>'required'
     ]);
 
-    skkm::create([
-      'dim_id'=>$request->dim_id,
-      'skkm'=>$request->skkm
+    $dim = DB::table('dimx_dim')
+         ->where('id_mhs', '=', $request->get('dimx_dim'))
+          ->value('dim_id');
+
+      $skkm_ = new SKKM;
+      $skkm_->id_mhs = $dim->dim_id;
+      $skkm_->skkm = $request->input('skkm');
+
+      $skkm_->save();
+    
+      return redirect('/sawPage')->with('success', "Data Saved");
+    
+  }
+  public function update_skkm(Request $request, $id){
+   
+    $this->validate($request,[
+      'skkm'=>'required'
     ]);
 
-    return view('sawPage',['vdata'=>$skkm_,'krt'=>$data]);
-  }
+      $skkm_ = SKKM::find($id);
+      $skkm_->skkm = $request->skkm;
 
+      $skkm_->save();
+    
+      return redirect('/sawPage')->with('success', "Data Updated");
+    
+  }
   public function edit_skkm($id){
     $skkm_ = skkm::find($id);
     $data = new Controller();
     $data->Mahasiswa();
     return view('/edit_skkm',['vdata'=>$skkm_,'krt'=>$data]);
-  }
-
-  public function update_skkm(Request $request, $id){
-    $data = new Controller();
-    $data->Mahasiswa();
-    $this->validate($request,[
-      'dim_id'=>'required',
-      'skkm'=>'required'
-    ]);
-
-    $skkm_ = skkm::find($id);
-    $skkm_->dim_id = $request->dim_id;
-    $skkm_->skkm = $request->skkm;
-    $skkm_->save();
-    return view('sawPage',['vdata'=>$skkm_,'krt'=>$data]);
   }
 
   public function hapus_skkm($id){

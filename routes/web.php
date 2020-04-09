@@ -36,4 +36,4 @@ Route::get('/Skkm/edit_skkm/{id}', 'SKKMController@edit_skkm');
 Route::put('/Skkm/update_skkm/{id}','SKKMController@update_skkm');
 Route::get('/Skkm/hapus_skkm/{id}', 'SKKMController@hapus_skkm');
 
-
+Route::put('/skkm','SKKMController@update_skkm');

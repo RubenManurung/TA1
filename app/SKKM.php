@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SKKM extends Model
 {
     protected $table = "skkm";
-    protected $fillable     = ['dim_id','skkm'];
+    protected $fillable     = ['id_mhs','skkm'];
     public $timestamps = false;
 
     public function dimx() {

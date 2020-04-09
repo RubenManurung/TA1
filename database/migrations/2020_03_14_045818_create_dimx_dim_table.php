@@ -14,7 +14,7 @@ class CreateDimxDimTable extends Migration
     public function up()
     {
         Schema::create('dimx_dim', function (Blueprint $table) {
-            $table->integer('dim_id');
+            $table->bigIncrements('dim_id')->unsigned();
             $table->string('nim')->nullable();
             $table->string('nama')->nullable();
             $table->integer('thn_masuk')->nullable();
