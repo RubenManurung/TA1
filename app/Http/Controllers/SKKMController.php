@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Kriteria;
 use App\SKKM;
+use App\Mahasiswa;
 use App\DimPenilaian;
 use App\AdekRegistrasi;
-use App\Http\Controllers\Controller;
 use DB;
 
 class SKKMController extends Controller
@@ -15,62 +17,38 @@ class SKKMController extends Controller
     return view('/tambah_skkm');
   }
 
-  // public function store_skkm(Request $request){
-  //   $data = new Controller();
-  //   $data->Mahasiswa();
-  //   $skkm_ = skkm::all();
-  //   $this->validate($request,[
-  //     'dim_id'=>'required',
-  //     'skkm'=>'required'
-  //   ]);
-
-  //   skkm::create([
-  //     'dim_id'=>$request->dim_id,
-  //     'skkm'=>$request->skkm
-  //   ]);
-
-  //   return view('sawPage',['vdata'=>$skkm_,'krt'=>$data]);
-  // }
+  public function tambah()
+  {
+    return $this->hasOne(App\mahasiswa);
+  }
 
   public function store_skkm(Request $request){
-    
-    $this->validate($request,[
-      'skkm'=>'required'
+        SKKM::create([
+      'dim_id'=>$request->dim_id,
+      'skkm'=>$request->skkm
     ]);
 
-    $dim = DB::table('dimx_dim')
-         ->where('id_mhs', '=', $request->get('dimx_dim'))
-          ->value('dim_id');
+    return redirect()->back();
 
-      $skkm_ = new SKKM;
-      $skkm_->id_mhs = $dim->dim_id;
-      $skkm_->skkm = $request->input('skkm');
-
-      $skkm_->save();
-    
-      return redirect('/sawPage')->with('success', "Data Saved");
-    
   }
-  public function update_skkm(Request $request, $id){
-   
-    $this->validate($request,[
-      'skkm'=>'required'
-    ]);
 
-      $skkm_ = SKKM::find($id);
-      $skkm_->skkm = $request->skkm;
-
-      $skkm_->save();
-    
-      return redirect('/sawPage')->with('success', "Data Updated");
-    
-  }
+  
   public function edit_skkm($id){
-    $skkm_ = skkm::find($id);
-    $data = new Controller();
-    $data->Mahasiswa();
-    return view('/edit_skkm',['vdata'=>$skkm_,'krt'=>$data]);
+    
+    $skkm = DB::table('SKKM')->where('id',$id)->get();
+    return view('/Skkm',['SKKM'=> $skkm]);
   }
+
+  public function update_skkm(Request $request){
+    DB::table('SKKM')->where('id',$request->id)->update([
+      'dim_id'=>$request->dim_id,
+      'skkm'=>$request->skkm
+    ]);
+
+    return redirect('/Skkm');
+  }
+
+
 
   public function hapus_skkm($id){
     $data = new Controller();
@@ -83,4 +61,86 @@ class SKKMController extends Controller
 
     return view('sawPage',['vdata'=>$skkm_,'krt'=>$data]);
   }
+
+  public function hasil_skkm()
+    {
+        $kriteria_saw = kriteria::all();
+        $kriteria_s_a_w = DimPenilaian::selectRaw("
+      askm_dim_penilaian.akumulasi_skor,
+      askm_dim_penilaian.dim_id,
+      askm_dim_penilaian.ta,
+      askm_dim_penilaian.sem_ta");
+        $query = AdekRegistrasi::selectRaw("skkm.skkm, dimx_dim.dim_id, dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+            ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
+            ->leftJoin('skkm', 'skkm.dim_id', 'dimx_dim.dim_id')
+            ->leftJoin(\DB::raw("(" . $kriteria_s_a_w->toSql() . ") as p"), function ($query) {
+                $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
+                $query->on('p.ta', '=', 'adak_registrasi.ta');
+                $query->on('p.sem_ta', '=', 'adak_registrasi.sem_ta');
+            })
+            ->groupBy('dimx_dim.dim_id')
+            ->get();
+
+        $arrayMahasiswa = array();
+        $arraySkkm = array();
+
+        $max = (float)$query[0]['IPK'];
+        $min = $query[0]['akumulasi_skor'];
+        foreach($query as $data){
+            if($data['IPK'] > $max){ $max = $data['IPK'];}
+            if($data['akumulasi_skor'] < $min){ $min = $data['akumulasi_skor'];}
+        }
+
+        $max_nilai = 0;
+        $max_skkm = 0;
+        foreach ($query as $item) {
+            $normalisasi = number_format(($item['IPK'] / $max), 2);
+            $normali = number_format(($min / $item['akumulasi_skor']), 2);
+
+            $total = number_format((float)((0.5 * $normalisasi) + (0.5 *$normali)), 2);
+            if($total>$max_nilai){
+              $max_nilai = $total;
+            }
+
+            if($item['skkm']>$max_skkm){
+              $max_skkm = $item['skkm'];
+            }
+        }
+
+        foreach ($query as $item) {
+          $normalisasi = number_format(($item['IPK'] / $max), 2);
+          $normali = number_format(($min / $item['akumulasi_skor']), 2);
+
+          $total = number_format((float)((0.5 * $normalisasi) + (0.5 *$normali)), 2);
+
+          $nilai_akhir = $total/$max_nilai;
+          $skkm = $item['skkm']/$max_skkm;
+
+          $hasil = number_format((float)((0.5 * $nilai_akhir) + (0.5 *$skkm)), 2);
+          
+          $arraySkkm[] = $hasil;
+      }
+
+        foreach ($query as $item) {
+            $arrayMahasiswa[] = $item;
+        }
+
+        $combineData = array_combine($arraySkkm, $arrayMahasiswa);
+        //$combineDataSkkm = array_combine($arraySkkm, $combineData);
+        //dd($arrayNilaiAkhir);
+        //dd($arrayMahasiswa);
+        //dd($arraySkkm);
+        // dd($arraySkkm);
+        // die();
+        krsort($combineData);
+        $krt = array_slice($combineData, 0, 5);
+        // print_r($krt);
+        // die();
+        //dd($krt);
+        //die();
+
+
+        return view('sawPage', ['vdata' => $kriteria_saw])->with(compact('krt'));
+    }
+
 }

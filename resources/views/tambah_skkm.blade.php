@@ -17,10 +17,10 @@
         <tr>
           <td>DIM</td>
           <td>
-            <input class="form-control" placeholder="dim" type="text" onkeyup="isi_otomatis()" name="dim_id">
-            @if($errors->has('dim_id'))
+            <input class="form-control" placeholder="dim" type="text" onkeyup="isi_otomatis()" name="id_mhs">
+            @if($errors->has('id_mhs'))
             <div class="text-danger">
-              {{$errors->first('dim_id')}}
+              {{$errors->first('id_mhs')}}
             </div>
             @endif
           </td>

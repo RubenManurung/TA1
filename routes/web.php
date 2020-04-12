@@ -31,9 +31,10 @@ Route::get('/Mahasiswa', 'Controller@Mahasiswa');
 
 
 Route::get('Skkm/route_tambah_skkm', 'SKKMController@route_tambah_skkm');
-Route::post('Skkm/store_skkm','SKKMController@store_skkm');
-Route::get('/Skkm/edit_skkm/{id}', 'SKKMController@edit_skkm');
-Route::put('/Skkm/update_skkm/{id}','SKKMController@update_skkm');
-Route::get('/Skkm/hapus_skkm/{id}', 'SKKMController@hapus_skkm');
+Route::post('/Skkm/store_skkm','SKKMController@store_skkm');
+Route::get('/Skkm/edit_skkm/{id}','SKKMController@edit_skkm');
+Route::post('/Skkm/update_skkm','SKKMController@update_skkm');
+Route::get('/Skkm/hasil', 'SKKMController@hasil_skkm');
+Route::match(['get', 'post'], '/Skkm/update_skkm{id}', 'SKKMController@update_skkm');
+Route::post('/Skkm/update_skkm/{id}','SKKMController@update_skkm');
 
-Route::put('/skkm','SKKMController@update_skkm');

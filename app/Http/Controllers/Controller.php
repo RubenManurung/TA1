@@ -39,29 +39,6 @@ class Controller extends BaseController
       return view('sawPage',['krt'=>$data,'vdata'=>$kriteria_saw]);
     }
 
-    public function Skkm()
-    {
-        $skkm_ = skkm::all();
-        $skkm__ = DimPenilaian::selectRaw("
-      askm_dim_penilaian.akumulasi_skor,
-      askm_dim_penilaian.dim_id,
-      askm_dim_penilaian.ta,
-      askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw(" dimx_dim.nama, skkm.skkm, adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
-            ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
-            ->join('skkm', 'skkm.id_mhs', 'adak_registrasi.dim_id')
-            ->leftJoin(\DB::raw("(" . $skkm__->toSql() . ") as p"), function ($query) {
-                $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
-                $query->on('p.dim_id', '=', 'skkm.id_mhs');
-                $query->on('p.ta', '=', 'adak_registrasi.ta');
-                $query->on('p.sem_ta', '=', 'adak_registrasi.sem_ta');
-            })
-            ->groupBy('dimx_dim.dim_id')
-            ->get();
-        return view('sawPage', ['krt' => $query], ['vdata' => $skkm_]);
-    }
-
-
     public function Penilaian()
     {
         $kriteria_saw = kriteria::all();
@@ -70,9 +47,8 @@ class Controller extends BaseController
       askm_dim_penilaian.dim_id,
       askm_dim_penilaian.ta,
       askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("dimx_dim.dim_id,dimx_dim.nama,skkm.skkm, adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdekRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
             ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
-            ->join('skkm', 'skkm.id_mhs', 'adak_registrasi.dim_id')
             ->leftJoin(\DB::raw("(" . $kriteria_s_a_w->toSql() . ") as p"), function ($query) {
                 $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
                 $query->on('p.ta', '=', 'adak_registrasi.ta');
@@ -114,6 +90,7 @@ class Controller extends BaseController
         return view('sawPage', ['vdata' => $kriteria_saw])->with(compact('krt'));
     }
 
+
     public function Perhitungan()
     {
         $kriteria_saw = kriteria::all();
@@ -146,6 +123,71 @@ class Controller extends BaseController
             ->get();
 
         return view('sawPage', ['krt' => $query], ['vdata' => $kriteria_saw]);
+    }
+
+    public function Skkm()
+    {
+        $kriteria_saw = kriteria::all();
+        $kriteria_s_a_w = DimPenilaian::selectRaw("
+      askm_dim_penilaian.akumulasi_skor,
+      askm_dim_penilaian.dim_id,
+      askm_dim_penilaian.ta,
+      askm_dim_penilaian.sem_ta");
+        $query = AdekRegistrasi::selectRaw("skkm.skkm, dimx_dim.dim_id, dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+            ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
+            ->leftJoin('skkm', 'skkm.dim_id', 'dimx_dim.dim_id')
+            ->leftJoin(\DB::raw("(" . $kriteria_s_a_w->toSql() . ") as p"), function ($query) {
+                $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
+                $query->on('p.ta', '=', 'adak_registrasi.ta');
+                $query->on('p.sem_ta', '=', 'adak_registrasi.sem_ta');
+            })
+            ->groupBy('dimx_dim.dim_id')
+            ->get();
+
+        $arrayNilaiAkhir = array();
+        $arrayMahasiswa = array();
+        $arraySkkm = array();
+
+        $max = (float)$query[0]['IPK'];
+        $min = $query[0]['akumulasi_skor'];
+        foreach($query as $data){
+            if($data['IPK'] > $max){ $max = $data['IPK'];}
+            if($data['akumulasi_skor'] < $min){ $min = $data['akumulasi_skor'];}
+        }
+
+        foreach ($query as $item) {
+            $normalisasi = number_format(($item['IPK'] / $max), 2);
+            $normali = number_format(($min / $item['akumulasi_skor']), 2);
+
+            $total = number_format((float)((0.5 * $normalisasi) + (0.5 *$normali)), 2);
+
+            $arrayNilaiAkhir[] = $total;
+
+            $hasilSeleksiSkkm = number_format((float)((0.5 * $total) + (0.5 *$item['skkm'])), 2);
+            $arraySkkm[] = $hasilSeleksiSkkm;
+        }
+
+        foreach ($query as $item) {
+            $arrayMahasiswa[] = $item;
+        }
+
+        $combineData = array_combine($arrayNilaiAkhir, $arrayMahasiswa);
+        //$combineDataSkkm = array_combine($arraySkkm, $combineData);
+        //dd($arrayNilaiAkhir);
+        //dd($arrayMahasiswa);
+        //dd($arraySkkm);
+        // dd($arraySkkm);
+        // die();
+        krsort($combineData);
+
+        $krt = array_slice($combineData, 0, 10);
+        // print_r($krt);
+        // die();
+        //dd($krt);
+        //die();
+
+
+        return view('sawPage', ['vdata' => $kriteria_saw])->with(compact('krt'));
     }
 
 }

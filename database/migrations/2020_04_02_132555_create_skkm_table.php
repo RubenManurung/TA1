@@ -15,9 +15,9 @@ class CreateSkkmTable extends Migration
     {
         Schema::create('skkm', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
-            $table->bigInteger('id_mhs')->unsigned();
+            $table->bigInteger('dim_id')->unsigned();
             $table->float('skkm');
-            $table->foreign('id_mhs')->references('dim_id')->on('dimx_dim')->onDelete('cascade');
+            $table->foreign('dim_id')->references('dim_id')->on('dimx_dim')->onDelete('cascade');
             
         });
     }
