@@ -47,7 +47,7 @@ class Controller extends BaseController
       askm_dim_penilaian.dim_id,
       askm_dim_penilaian.ta,
       askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdekRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/2) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
             ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
             ->leftJoin(\DB::raw("(" . $kriteria_s_a_w->toSql() . ") as p"), function ($query) {
                 $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
@@ -66,7 +66,6 @@ class Controller extends BaseController
             if($data['IPK'] > $max){ $max = $data['IPK'];}
             if($data['akumulasi_skor'] < $min){ $min = $data['akumulasi_skor'];}
         }
-
         foreach ($query as $item) {
             $normalisasi = number_format(($item['IPK'] / $max), 2);
             if($min>0){
@@ -79,17 +78,12 @@ class Controller extends BaseController
 
             $arrayNilaiAkhir[] = $total;
         }
-
         foreach ($query as $item) {
             $arrayMahasiswa[] = $item;
         }
-
         $combineData = array_combine($arrayNilaiAkhir, $arrayMahasiswa);
-
         krsort($combineData);
-
         $krt = array_slice($combineData, 0, 20);
-//        dd($krt);
 
         return view('sawPage', ['vdata' => $kriteria_saw])->with(compact('krt'));
     }
@@ -101,8 +95,6 @@ class Controller extends BaseController
         $data = $this->Mahasiswa();
         return view('sawPage', ['krt' => $data], ['vdata' => $kriteria_saw]);
     }
-
-
     public function Mahasiswa()
     {
         $kriteria_saw = kriteria::all();
@@ -111,15 +103,14 @@ class Controller extends BaseController
       askm_dim_penilaian.dim_id,
       askm_dim_penilaian.ta,
       askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdekRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/2) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
             ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
             ->leftJoin(\DB::raw("(" . $kriteria_s_a_w->toSql() . ") as p"), function ($query) {
                 $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
                 $query->on('p.ta', '=', 'adak_registrasi.ta');
                 $query->on('p.sem_ta', '=', 'adak_registrasi.sem_ta');
-
-
             })
+            ->where('adak_registrasi.sem_ta','=','1', 'AND', '2')
             ->orderBy('dimx_dim.dim_id', 'desc')
             ->orderBy('adak_registrasi.ta', 'asc')
             ->orderBy('adak_registrasi.sem_ta', 'asc')
@@ -137,7 +128,7 @@ class Controller extends BaseController
       askm_dim_penilaian.dim_id,
       askm_dim_penilaian.ta,
       askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("skkm.id AS skkm_id,skkm.skkm, dimx_dim.dim_id, dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdekRegistrasi::selectRaw("skkm.id AS skkm_id,skkm.skkm, dimx_dim.dim_id, dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/2) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
             ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
             ->leftJoin('skkm', 'skkm.dim_id', 'dimx_dim.dim_id')
             ->leftJoin(\DB::raw("(" . $kriteria_s_a_w->toSql() . ") as p"), function ($query) {

@@ -15,7 +15,11 @@ Route::get('/', 'Controller@index');
 Route::get('/Kriteria', 'Controller@Kriteria');
 
 Route::get('sawPage','Controller@sawPage');
+Route::get('fuzzytopsisPage','PageController@fuzzytopsisPage');
+Route::get('/MahasiswaFT', 'PageController@MahasiswaFT');
+Route::get('/PenilaianFT', 'PageController@PenilaianFT');
 
+Route::get('/PerhitunganFT', 'PageController@PerhitunganFT');
 Route::get('/Penilaian', 'Controller@Penilaian');
 
 Route::get('/Perhitungan', 'Controller@Perhitungan');

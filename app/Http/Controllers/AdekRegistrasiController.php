@@ -18,12 +18,6 @@ class AdekRegistrasiController extends Controller
   $adak_regis = AdekRegistrasi::paginate(10);
   return view('adak_registrasi',['adak_registrasi'=>$adak_regis]);
 }
-
-// public function halaman_import_ip(){
-//   $adak_regis = AdakRegistrasi::all();
-//   return view('import_ip',['adak_registrasi'=>$adak_regis]);
-// }
-
 public function export_excel()
 {
   return Excel::download(new AdekRegistrasiExport, 'adak_registrasi.xlsx');

@@ -14,23 +14,22 @@
     <h1>SAW</h1>
     <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item left">
-            <a class="nav-link js-scroll-trigger" href="/dimx_dim">Import Data Mahasiswa</a>
+            <a class="nav-link {{ request()->is('dimx_dim') ? 'active': null }}" href="{{ url('dimx_dim') }}" role="tab">Import Data Mahasiswa</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/adak_registrasi">Import Data IP</a>
+            <a class="nav-link {{ request()->is('adak_registrasi') ? 'active': null }}" href="{{ url('adak_registrasi') }}" role="tab">Import Data IP</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/askm_dim_penilaian">Import Data Prilaku</a>
+            <a class="nav-link {{ request()->is('askm_dim_penilaian') ? 'active': null }}" href="{{ url('askm_dim_penilaian') }}" role="tab">Import Data Prilaku</a>
             </li>
             <li class="nav-item">
             <a class="nav-link {{ request()->is('Mahasiswa') ? 'active': null }}" href="{{ url('Mahasiswa') }}"
                role="tab">Seleksi Mahasiswa</a>
         </li>
- 
     </ul>
 	<div class="container">
 		<center>
-			<h4>Import Excel Ke Database Dengan Laravel</h4>
+			<h4>Import Excel IP Mahasiswa</h4>
 			<!-- <h5><a target="_blank" href="https://www.malasngoding.com/">www.malasngoding.com</a></h5> -->
 		</center>
 
@@ -50,7 +49,7 @@
 		@endif
 
 		<button type="button" class="btn btn-primary mr-5" data-toggle="modal" data-target="#importExcel">
-			IMPORT EXCEL
+			Import IP Mahasiswa
 		</button>
 
 		<!-- Import Excel -->

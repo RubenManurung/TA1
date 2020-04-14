@@ -14,20 +14,22 @@
     <h1>SAW</h1>
     <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item left">
-            <a class="nav-link js-scroll-trigger" href="/dimx_dim">Import Data Mahasiswa</a>
+            <a class="nav-link {{ request()->is('dimx_dim') ? 'active': null }}" href="{{ url('dimx_dim') }}" role="tab">Import Data Mahasiswa</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/adak_registrasi">Import Data IP</a>
+            <a class="nav-link {{ request()->is('adak_registrasi') ? 'active': null }}" href="{{ url('adak_registrasi') }}" role="tab">Import Data IP</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/askm_dim_penilaian">Import Data Prilaku</a>
+            <a class="nav-link {{ request()->is('askm_dim_penilaian') ? 'active': null }}" href="{{ url('askm_dim_penilaian') }}" role="tab">Import Data Prilaku</a>
             </li>
             <li class="nav-item">
             <a class="nav-link {{ request()->is('Mahasiswa') ? 'active': null }}" href="{{ url('Mahasiswa') }}"
                role="tab">Seleksi Mahasiswa</a>
         </li>
- 
     </ul>
+    
+    <!-- Tab panes -->
+    <div class="tab-content">
         <div class="tab-pane {{ request()->is('Mahasiswa') ? 'active': null }}" href="{{ url('Mahasiswa') }}"
              role="tabpanel">
             <h3>Mahasiswa</h3>
@@ -48,7 +50,7 @@
                         <td>{{ $dt_mhs['nama'] }}</td>
                         <td>{{ $dt_mhs['IPK'] }}</td>
                         <td>
-                        @if( $dt_mhs['akumulasi_skor'] == 0 )
+                      @if( $dt_mhs['akumulasi_skor'] == 0 )
                         {{ 'A' }}
                       @elseif($dt_mhs['akumulasi_skor'] >=1 && $dt_mhs['akumulasi_skor'] <=5)
                         {{ 'AB' }}
@@ -116,13 +118,12 @@
                         </td>
                 </tr>
 
-                <!-- Modal -->
 <!--add Modal -->
 <div class="modal fade" id="exampleModal<?php echo $value['dim_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><?php echo $value['nama']; ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -136,8 +137,6 @@
                         <input type="number" name="skkm" class="form-control"  placeholder="Enter SKKM">
                         <input type="number" hidden name="dim_id" value="<?php echo $value['dim_id']; ?>" class="form-control"  placeholder="ID Mahasiswa">
                     </div>
-                
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -236,7 +235,7 @@
 
         <div class="tab-pane {{ request()->is('Penilaian') ? 'active': null }}" href="{{ url('Penilaian') }}"
              role="tabpanel">
-            <h3>Normalisasi</h3>
+            <h3>Hasil Seleksi Awal IPK dan Nilai Perilaku (SAW)</h3>
             <a href="{{ url('Skkm') }}" class="btn btn-info btn-md">Seleksi Akhir</a> 
             <table class="table">
                 <th>No</th>
@@ -250,12 +249,27 @@
                     @foreach ($krt as $key => $value)
                         <td><?php echo($no++); ?></td>
                             <td>{{ $value['nama'] }}</td>
-
                             <td>
                                 {{ $value['IPK']}}
                             </td>
                             <td>
-                                {{ $value['akumulasi_skor'] }}
+                            @if( $value['akumulasi_skor'] == 0 )
+                                {{ 'A' }}
+                            @elseif($value['akumulasi_skor'] >=1 && $value['akumulasi_skor'] <=5)
+                                {{ 'AB' }}
+                            @elseif( $value['akumulasi_skor'] >=6 && $value['akumulasi_skor'] <=10)
+                                {{ 'B' }}
+                            @elseif( $value['akumulasi_skor'] >=11 && $value['akumulasi_skor'] <=15)
+                                {{ 'BC' }}
+                            @elseif( $value['akumulasi_skor'] >=16 && $value['akumulasi_skor'] <=25)
+                                {{ 'C' }}
+                            @elseif( $value['akumulasi_skor'] >=26 && $value['akumulasi_skor'] <=30)
+                                {{ 'D' }}
+                            @elseif( $value['akumulasi_skor'] > 30)
+                                {{ 'E' }}
+                            @else
+                                {{ 'data tidak terdefenisi' }}
+                            @endif
                             </td>
                         <td>
                             {{ $key }}
