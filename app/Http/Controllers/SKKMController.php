@@ -103,7 +103,11 @@ class SKKMController extends Controller
         $max_skkm = 0;
         foreach ($query as $item) {
             $normalisasi = number_format(($item['IPK'] / $max), 2);
-            $normali = number_format(($min / $item['akumulasi_skor']), 2);
+            if($min>0){
+              $normali = number_format(($min / $item['akumulasi_skor']), 2);
+            }else{
+              $normali = 0;
+            }
 
             $total = number_format((float)((0.5 * $normalisasi) + (0.5 *$normali)), 2);
             if($total>$max_nilai){
@@ -117,7 +121,11 @@ class SKKMController extends Controller
 
         foreach ($query as $item) {
           $normalisasi = number_format(($item['IPK'] / $max), 2);
-          $normali = number_format(($min / $item['akumulasi_skor']), 2);
+          if($min>0){
+            $normali = number_format(($min / $item['akumulasi_skor']), 2);
+          }else{
+            $normali = 0;
+          }
 
           $total = number_format((float)((0.5 * $normalisasi) + (0.5 *$normali)), 2);
 
@@ -141,7 +149,7 @@ class SKKMController extends Controller
         // dd($arraySkkm);
         // die();
         krsort($combineData);
-        $krt = array_slice($combineData, 0, 5);
+        $krt = array_slice($combineData, 0, 10);
         // print_r($krt);
         // die();
         //dd($krt);

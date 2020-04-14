@@ -28,61 +28,6 @@
         </li>
  
     </ul>
-
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div class="tab-pane {{ request()->is('Kriteria') ? 'active': null }}" href="{{ url('Kriteria') }}"
-             role="tabpanel">
-            <h3>Data Kriteria</h3>
-            <table class="table table-borderless">
-                <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Kode Kriteria</th>
-                    <th>Nama Kriteria</th>
-                    <th>Nilai Atribut</th>
-                    <th>Bobot</th>
-                    <th>Keterangan</th>
-                    <th>Action</th>
-                    <th>
-                        <a href="{{ url('/Kriteria/route_tambah_krt_saw') }}">
-                            <img class="img-fluid" alt="Responsive image" src="template_madan/images/iconplus.png">
-                            Tambah Data
-                        </a>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php $i = 1; ?>
-                <?php
-                if (is_array($vdata) || is_object($vdata) ){ ?>
-                @foreach($vdata as $kriteria)
-                    <tr>
-                        <td><?php echo($i++); ?></td>
-                        <td>{{$kriteria['kode']}}</td>
-                        <td>{{$kriteria['nama']}}</td>
-                        <td>{{$kriteria['atribut']}}</td>
-                        <td>{{$kriteria['bobot']}}</td>
-                        <td>{{$kriteria['keterangan']}}</td>
-                        <td>
-                            <a href="/Kriteria/edit_kriteria/{{ $kriteria['id'] }}">
-                                <img style="width:10%; height: auto;" alt="Responsive image"
-                                     src="template_madan/images/edit.png">
-                            </a>
-                            <a href="/Kriteria/hapus_kriteria/{{ $kriteria['id'] }}">
-                                <img style="width:10%; height: auto;" src="template_madan/images/delete.png"
-                                     alt="Responsive image">
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-                <?php } ?>
-                </tbody>
-            </table>
-        </div>
-
-
         <div class="tab-pane {{ request()->is('Mahasiswa') ? 'active': null }}" href="{{ url('Mahasiswa') }}"
              role="tabpanel">
             <h3>Mahasiswa</h3>
@@ -94,19 +39,40 @@
                 <th>Nilai Prilaku</th>
                 <tr>
                     <?php $no = 1; ?>
-                    <?php if (is_array($krt) || is_object($krt)){ ?>
+                    <?php if (is_array($krt) || is_object($krt)){ 
+                        
+                    ?>
+                        
                     @foreach ($krt as $dt_mhs)
                         <td><?php echo($no++); ?></td>
                         <td>{{ $dt_mhs['nama'] }}</td>
                         <td>{{ $dt_mhs['IPK'] }}</td>
-                        <td>{{ $dt_mhs['akumulasi_skor'] }}</td>
+                        <td>
+                        @if( $dt_mhs['akumulasi_skor'] == 0 )
+                        {{ 'A' }}
+                      @elseif($dt_mhs['akumulasi_skor'] >=1 && $dt_mhs['akumulasi_skor'] <=5)
+                        {{ 'AB' }}
+                      @elseif( $dt_mhs['akumulasi_skor'] >=6 && $dt_mhs['akumulasi_skor'] <=10)
+                        {{ 'B' }}
+                      @elseif( $dt_mhs['akumulasi_skor'] >=11 && $dt_mhs['akumulasi_skor'] <=15)
+                        {{ 'BC' }}
+                      @elseif( $dt_mhs['akumulasi_skor'] >=16 && $dt_mhs['akumulasi_skor'] <=25)
+                        {{ 'C' }}
+                      @elseif( $dt_mhs['akumulasi_skor'] >=26 && $dt_mhs['akumulasi_skor'] <=30)
+                        {{ 'D' }}
+                      @elseif( $dt_mhs['akumulasi_skor'] > 30)
+                        {{ 'E' }}
+                      @else
+                        {{ 'data tidak terdefenisi' }}
+                      @endif
+                        
+                        </td>
                 </tr>
                 @endforeach
                 <?php } ?>
             </table>
 
         </div>
-
 
         <div class="tab-pane {{ request()->is('Skkm') ? 'active': null }}" href="{{ url('Skkm') }}" role="tabpanel">
             <h3>Data SKKM</h3>
@@ -300,45 +266,6 @@
                 <?php } ?>
             </table>
 
-        </div>
-
-
-
-
-
-
-
-
-        <div class="tab-pane {{ request()->is('Perhitungan') ? 'active': null }}" href="{{ url('Perhitungan') }}"
-             role="tabpanel">
-            <h3>Kriteria</h3>
-            <table class="table">
-                <th>No</th>
-                <th>Alternatif</th>
-                <th>C01</th>
-                <th>C02</th>
-                <th>SKKM</th>
-                <tr>
-                    <td>sdasda</td>
-                    <td>asd</td>
-                    <td>asd</td>
-                    <td>asda</td>
-                    <td>asda</td>
-                </tr>
-            </table>
-            <button type="button" name="button">Seleksi SKKM</button>
-            <h4>Hasil Ranking</h4>
-            <table class="table">
-                <th>No</th>
-                <th>Alternatif</th>
-                <th>Ranking</th>
-                <tr>
-                    <td>sdasda</td>
-                    <td>asd</td>
-                    <td>asd</td>
-                </tr>
-            </table>
-            <span onclick="this.parentElement.style.display='none'"></span>
         </div>
     </div>
 </div>

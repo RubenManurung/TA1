@@ -69,7 +69,11 @@ class Controller extends BaseController
 
         foreach ($query as $item) {
             $normalisasi = number_format(($item['IPK'] / $max), 2);
-            $normali = number_format(($min / $item['akumulasi_skor']), 2);
+            if($min>0){
+                $normali = number_format(($min / $item['akumulasi_skor']), 2);
+            }else{
+                $normali = 0;
+            }
 
             $total = number_format((float)((0.5 * $normalisasi) + (0.5 *$normali)), 2);
 
@@ -84,7 +88,7 @@ class Controller extends BaseController
 
         krsort($combineData);
 
-        $krt = array_slice($combineData, 0, 10);
+        $krt = array_slice($combineData, 0, 20);
 //        dd($krt);
 
         return view('sawPage', ['vdata' => $kriteria_saw])->with(compact('krt'));
@@ -157,7 +161,11 @@ class Controller extends BaseController
 
         foreach ($query as $item) {
             $normalisasi = number_format(($item['IPK'] / $max), 2);
-            $normali = number_format(($min / $item['akumulasi_skor']), 2);
+            if($min>0){
+                $normali = number_format(($min / $item['akumulasi_skor']), 2);
+            }else{
+                $normali = 0;
+            }
 
             $total = number_format((float)((0.5 * $normalisasi) + (0.5 *$normali)), 2);
 
@@ -180,7 +188,7 @@ class Controller extends BaseController
         // die();
         krsort($combineData);
 
-        $krt = array_slice($combineData, 0, 10);
+        $krt = array_slice($combineData, 0, 20);
         // print_r($krt);
         // die();
         //dd($krt);

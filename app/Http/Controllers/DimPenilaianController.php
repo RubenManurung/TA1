@@ -38,10 +38,10 @@ public function import_excel(Request $request)
 		$nama_file = rand().$file->getClientOriginalName();
 
 		// upload ke folder file_siswa di dalam folder public
-		$file->move('file_siswa',$nama_file);
+		$file->move('file_excell',$nama_file);
 
 		// import data
-		Excel::import(new AskmDimPenilaianImport, public_path('/file_siswa/'.$nama_file));
+		Excel::import(new AskmDimPenilaianImport, public_path('/file_excell/'.$nama_file));
 
 		// notifikasi dengan session
 		Session::flash('sukses','Data Berhasil Diimport!');
