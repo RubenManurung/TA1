@@ -13,10 +13,20 @@
 <div class="container">
     <h1>SAW</h1>
     <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
+            <li class="nav-item left">
+            <a class="nav-link js-scroll-trigger" href="/dimx_dim">Import Data Mahasiswa</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="/adak_registrasi">Import Data IP</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="/askm_dim_penilaian">Import Data Prilaku</a>
+            </li>
+            <li class="nav-item">
             <a class="nav-link {{ request()->is('Mahasiswa') ? 'active': null }}" href="{{ url('Mahasiswa') }}"
-               role="tab">Data Mahasiswa</a>
+               role="tab">Seleksi Mahasiswa</a>
         </li>
+ 
     </ul>
 
 
@@ -115,90 +125,125 @@
                         <td>{{ $value['nama'] }}</td>
                         <td>{{ $key }}</td>
                         <td>
-                        @if($value['skkm'] == null)
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<?php echo $value['dim_id']; ?>">
-                            Tambah SKKM
-                        </button>
-                        @else
-                        {{$value['skkm']}}
-                        @endif
+                            @if($value['skkm'] == null)
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<?php echo $value['dim_id']; ?>">
+                                Tambah SKKM
+                            </button>
+                            @else
+                            {{$value['skkm']}}
+                            @endif
                         </td>
                         <td>
-                        @if($value['skkm'] == null)
-                        
-                        @else
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $value['dim_id']; ?>">
+                            @if($value['skkm'] !=null)
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $value['dim_id']; ?>">
                             Edit SKKM
-                        </button>
-                        @endif
+                            </button>
+                            @endif
+                        </td>
+
+                        <td>
+                            @if($value['skkm'] !=null)
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal<?php echo $value['dim_id']; ?>">
+                            Hapus SKKM
+                            </button>
+                            @endif
                         </td>
                 </tr>
 
                 <!-- Modal -->
+<!--add Modal -->
 <div class="modal fade" id="exampleModal<?php echo $value['dim_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-    <form method="post" >
-    {{ method_field('POST') }}
-    {{csrf_field()}}
-  <div class="form-group">
-    <label >SKKM</label>
-    <input type="number" name="skkm" class="form-control"  placeholder="Enter SKKM">
-    <input type="number" hidden name="dim_id" value="<?php echo $value['dim_id']; ?>" class="form-control"  placeholder="ID Mahasiswa">
-    </div>
-  
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <form method="post" action="/Skkm/store_skkm">
+                    {{ method_field('POST') }}
+                    {{csrf_field()}}
+                    <div class="form-group">
+                        <label >SKKM</label>
+                        <input type="number" name="skkm" class="form-control"  placeholder="Enter SKKM">
+                        <input type="number" hidden name="dim_id" value="<?php echo $value['dim_id']; ?>" class="form-control"  placeholder="ID Mahasiswa">
+                    </div>
+                
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary"action="/Skkm/store_skkm">Save changes</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
-              
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                    </form>
+                    </div>
+                </div>
+                </div>
+                
+                <!-- edit modal -->
+                <div class="modal fade" id="editModal<?php echo $value['dim_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><?php echo $value['nama']; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <form method="post" action="{{ URL('/Skkm/edit_skkm/'. $value->skkm_id)}}" id=editform> 
+                    <!-- {{ method_field('POST') }} -->
+                    {{csrf_field()}}
+                    <div class="form-group">
+                        <label >SKKM</label>
+                        <input type="number" name="skkm" id="skkm" value="<?php echo $value['skkm']; ?>" class="form-control"  placeholder="Enter SKKM">
+                        <input type="number" hidden name="dim_id" value="<?php echo $value['dim_id']; ?>" class="form-control"  placeholder="ID Mahasiswa">
+                    </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Edit SKKM</button>
+                    </div>
+                    </form>
+                    </div>
+                </div>
+                </div>
 
 
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal<?php echo $value['dim_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-    <form method="POST" action="/Skkm/update_skkm">
-    {{ method_field('POST') }}
-    {{csrf_field()}}
-  <div class="form-group">
-    <label >SKKM</label>
-    <input type="number" id="skkm" name="skkm" class="form-control"  value="<?php echo $value['skkm']; ?>" >
-    </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" >Save changes</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
+                 <!--delete modal -->
+                 <div class="modal fade" id="deleteModal<?php echo $value['dim_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><?php echo $value['nama']; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <form method="post" action="{{ URL('/Skkm/delete_skkm/'. $value->skkm_id)}}" id=deleteform> 
+                    {{csrf_field()}}
+                    <div class="form-group">
+                        <label >SKKM</label>
+                        <input disabled type="number" name="skkm" id="skkm" value="<?php echo $value['skkm']; ?>" class="form-control"  placeholder="Enter SKKM">
+                        <input type="number" hidden name="dim_id" value="<?php echo $value['dim_id']; ?>" class="form-control"  placeholder="ID Mahasiswa">
+                    </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Delete SKKM</button>
+                    </div>
+                    </form>
+                    </div>
+                </div>
+                </div>
+
                 @endforeach
                 <?php } ?>
             </table>
         </div>
-
                         
 
         <div class="tab-pane {{ request()->is('Skkm/hasil') ? 'active': null }}" href="{{ url('Skkm/hasil') }}" role="tabpanel">

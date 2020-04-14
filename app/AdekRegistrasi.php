@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class AdekRegistrasi extends Model
 {
     protected $table = "adak_registrasi";
+    protected $fillable = ['dim_id','ta','sem_ta','nr','status_akhir_registrasi'];
+    public $timestamps = false;
 }

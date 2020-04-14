@@ -133,7 +133,7 @@ class Controller extends BaseController
       askm_dim_penilaian.dim_id,
       askm_dim_penilaian.ta,
       askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("skkm.skkm, dimx_dim.dim_id, dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdekRegistrasi::selectRaw("skkm.id AS skkm_id,skkm.skkm, dimx_dim.dim_id, dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/4) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
             ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
             ->leftJoin('skkm', 'skkm.dim_id', 'dimx_dim.dim_id')
             ->leftJoin(\DB::raw("(" . $kriteria_s_a_w->toSql() . ") as p"), function ($query) {

@@ -32,20 +32,28 @@ class SKKMController extends Controller
 
   }
 
-  
-  public function edit_skkm($id){
-    
-    $skkm = DB::table('SKKM')->where('id',$id)->get();
-    return view('/Skkm',['SKKM'=> $skkm]);
-  }
-
-  public function update_skkm(Request $request){
-    DB::table('SKKM')->where('id',$request->id)->update([
-      'dim_id'=>$request->dim_id,
-      'skkm'=>$request->skkm
+  public function edit_skkm(Request $request, $id){
+    $this->validate($request,[
+      'skkm'=>'required'
     ]);
 
-    return redirect('/Skkm');
+    $skkm_ = skkm::find($id);
+    $skkm_->skkm = $request->input('skkm');
+
+    $skkm_->save();
+    return redirect()->back();
+  }
+
+  public function delete_skkm($id){
+    $data = new Controller();
+    $data->Mahasiswa();
+    $skkm_ = skkm::find($id);
+    if(($skkm_ != null) && ($data != null )) {
+      $skkm_->delete();
+      return redirect()->back();
+    }
+
+    return redirect()->back();
   }
 
 

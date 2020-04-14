@@ -32,9 +32,19 @@ Route::get('/Mahasiswa', 'Controller@Mahasiswa');
 
 Route::get('Skkm/route_tambah_skkm', 'SKKMController@route_tambah_skkm');
 Route::post('/Skkm/store_skkm','SKKMController@store_skkm');
-Route::get('/Skkm/edit_skkm/{id}','SKKMController@edit_skkm');
-Route::post('/Skkm/update_skkm','SKKMController@update_skkm');
+Route::post('/Skkm/edit_skkm/{id}', 'SKKMController@edit_skkm');
+Route::post('/Skkm/delete_skkm/{id}', 'SKKMController@delete_skkm');
 Route::get('/Skkm/hasil', 'SKKMController@hasil_skkm');
-Route::match(['get', 'post'], '/Skkm/update_skkm{id}', 'SKKMController@update_skkm');
-Route::post('/Skkm/update_skkm/{id}','SKKMController@update_skkm');
 
+
+Route::get('/adak_registrasi','AdekRegistrasiController@index');
+Route::get('/adak_registrasi/export_excel','AdekRegistrasiController@export_excel');
+Route::post('/adak_registrasi/import_excel', 'AdekRegistrasiController@import_excel');
+
+Route::get('/askm_dim_penilaian','DimPenilaianController@index');
+Route::get('/askm_dim_penilaian/export_excel','DimPenilaianController@export_excel');
+Route::post('/askm_dim_penilaian/import_excel', 'DimPenilaianController@import_excel');
+
+Route::get('/dimx_dim','DimxDimController@index');
+Route::get('/dimx_dim/export_excel','DimxDimController@export_excel');
+Route::post('/dimx_dim/import_excel', 'DimxDimController@import_excel');
