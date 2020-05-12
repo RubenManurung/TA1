@@ -15,19 +15,20 @@
   <!-- <h1>Fuzzy Topsis</h1> -->
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item">
-        <a class="nav-link {{ request()->is('MahasiswaFT') ? 'active': null }}" href="{{ url('MahasiswaFT') }}" role="tab">Data Mahasiswa</a>
+        <a class="nav-link" href="{{ url('MahasiswaFT') }}" role="tab">Data Mahasiswa</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ request()->is('PenilaianFT') ? 'active': null }}" href="{{ url('PenilaianFT') }}" role="tab">Data Penilaian</a>
+        <a class="nav-link" href="{{ url('PenilaianFT') }}" role="tab">Data Penilaian</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ request()->is('PerhitunganFT') ? 'active': null }}" href="{{ url('PerhitunganFT') }}" role="tab">Data Perhitungan</a>
+        <a class="nav-link" href="{{ url('PerhitunganFT') }}" role="tab">Data Perhitungan</a>
       </li>
     </ul>
 
   <div class="tab-pane {{ request()->is('MahasiswaFT') ? 'active': null }}" href="{{ url('MahasiswaFT') }}" role="tabpanel">
     <h3>Mahasiswa</h3>
-      <table class="table">
+    <a href="#" class="btn btn-info btn-md">Seleksi Awal</a>
+      <table class="table table-striped table-hover">
         <th>No</th>
         <th>Nama</th>
         <th>Nilai IPK</th>
@@ -100,9 +101,9 @@
         </table>
   </div>
 
-  <div class="tab-pane {{ request()->is('PenilaianFT') ? 'active': null }}" href="{{ url('PenilaianFT') }}" role="tabpanel">
+  <!-- <div class="tab-pane {{ request()->is('PenilaianFT') ? 'active': null }}" href="{{ url('PenilaianFT') }}" role="tabpanel">
     <h3>Penilaian</h3>
-    <table class="table">
+    <table class="table table-striped table-hover">
       <th>No</th>
       <th>Nama</th>
       <th>Nilai IPK</th>
@@ -174,38 +175,7 @@
       <?php } ?>
             <button type="button" name="button">SELEKSI</button>
       </table>
-  </div>
-
-  <div class="tab-pane {{ request()->is('PerhitunganFT') ? 'active': null }}" href="{{ url('PerhitunganFT') }}" role="tabpanel">
-    <h3>Kriteria</h3>
-      <table class="table">
-        <th>No</th>
-        <th>Alternatif</th>
-        <th>C01</th>
-        <th>C02</th>
-        <th>SKKM</th>
-          <tr>
-            <td>sdasda</td>
-            <td>asd</td>
-            <td>asd</td>
-            <td>asda</td>
-            <td>asda</td>
-          </tr>
-      </table>
-      <button type="button" name="button">Seleksi SKKM</button>
-  <h4>Hasil Ranking</h4>
-    <table class="table">
-      <th>No</th>
-      <th>Alternatif</th>
-      <th>Ranking</th>
-        <tr>
-          <td>sdasda</td>
-          <td>asd</td>
-          <td>asd</td>
-        </tr>
-    </table>
-    <span onclick="this.parentElement.style.display='none'"></span>
-  </div>
+  </div> -->
 </div>
   </div>
 </body>

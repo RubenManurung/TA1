@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Kriteria;
 use App\DimPenilaian;
-use App\AdekRegistrasi;
+use App\AdakRegistrasi;
 use DB;
 
 class PageController extends Controller
@@ -35,13 +35,13 @@ class PageController extends Controller
 
     public function MahasiswaFT()
     {
-      $kriteria_ft = kriteria::all();
+      $kriteria_ft = Kriteria::all();
       $kriteria_f_t = DimPenilaian::selectRaw("
       askm_dim_penilaian.akumulasi_skor,
       askm_dim_penilaian.dim_id,
       askm_dim_penilaian.ta,
       askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/2) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdakRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta,(SUM(adak_registrasi.nr)/2) AS IPK, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
             ->join('dimx_dim', 'dimx_dim.dim_id', 'adak_registrasi.dim_id')
             ->leftJoin(\DB::raw("(" . $kriteria_f_t->toSql() . ") as p"), function ($query) {
                 $query->on('p.dim_id', '=', 'adak_registrasi.dim_id');
@@ -65,7 +65,7 @@ class PageController extends Controller
                          askm_dim_penilaian.dim_id,
                          askm_dim_penilaian.ta,
                          askm_dim_penilaian.sem_ta");
-        $query = AdekRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
+        $query = AdakRegistrasi::selectRaw("dimx_dim.nama,adak_registrasi.ta, adak_registrasi.sem_ta, adak_registrasi.nr, p.akumulasi_skor")
                  ->join('dimx_dim','dimx_dim.dim_id','adak_registrasi.dim_id')
                  ->leftJoin(\DB::raw("(" . $kriteria_f_t->toSql() . ") as p"),function ($query) {
                      $query->on('p.dim_id','=','adak_registrasi.dim_id');

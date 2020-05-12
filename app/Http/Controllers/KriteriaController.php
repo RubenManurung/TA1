@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Kriteria;
 use App\DimPenilaian;
-use App\AdekRegistrasi;
+use App\AdakRegistrasi;
 use App\Http\Controllers\Controller;
 use DB;
 
